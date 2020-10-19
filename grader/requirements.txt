@@ -1,0 +1,11 @@
+black~=19.3b0
+click~=7.1.2
+flake8~=3.8.4
+mccabe~=0.6.1
+mypy~=0.79
+pexpect~=4.8.0
+pycodestyle~=2.6.0
+pylint~=2.6.0
+pytest~=6.1.1
+pytest-cov~=2.10.1
+pytest-html~=2.1.1
