@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+"""
+Purpose:
+    Executable for running the Python Grader Tool
+
+Function Call:
+    pygrader COMMANDS...
+"""
+
+# Python Library Imports
+# N/A
+
+# Local Python Library Imports
+from grader.cli import cli
+
+
+###
+# Main Execution
+###
+
+
+def main() -> None:
+    """
+    Purpose:
+        Entrypoint for CLI
+    Args:
+        N/A
+    Return:
+        N/A
+    Raises:
+        N/A
+    """
+
+    cli.setup_grader_cli()
+    cli.pygrader_cli()
+
+
+###
+# Script Main Execution
+###
+
+
+if __name__ == "__main__":
+    main()
