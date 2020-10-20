@@ -69,7 +69,7 @@ def get_readme(readme_file: str) -> str:
     Args:
         readme_file: Project README file
     Return:
-        requirement_files: README file data 
+        requirement_files: README file data
     """
 
     readme_data = "Description Not Found"
@@ -124,7 +124,7 @@ def main() -> None:
 
     setup(
         author="Haystack",
-        author_email="TBD",
+        author_email="Christopher.Hayden.Todd@gmail.com",
         classifiers=[
             "Development Status :: 5 - Production/Stable",
             "Intended Audience :: Developers",
@@ -136,20 +136,23 @@ def main() -> None:
             "Programming Language :: Python :: 3.9",
             "Framework :: Pytest",
         ],
-        description=("Tool for grading Python projects"),
+        description=("Tool for grading software projects"),
         include_package_data=True,
         install_requires=install_requirements,
         keywords=["python"],
         long_description=readme,
         long_description_content_type="text/markdown",
-        name="haystack-python-grader",
+        name="haystack-auto-grader",
         packages=packages,
         project_urls={},
         python_requires=">3.6",
-        scripts=["./grader/bin/pygrader"],
+        scripts=[
+            "./grader/bin/grader_python",
+            # TODO, other languages
+        ],
         setup_requires=setup_requirements,
         tests_require=test_requirements,
-        url="TBD",
+        url="https://github.com/Haystack-Assessments/auto-grader",
         version=version,
     )
 

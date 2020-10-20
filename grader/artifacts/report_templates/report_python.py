@@ -1,6 +1,6 @@
 """
 Purpose:
-    Holds python object of the candidate report template. Allows for string replacement
+    Holds python object of the python report template. Allows for string replacement
     .md generation
 """
 
@@ -16,7 +16,7 @@ Purpose:
 ###
 
 
-candidate_report_template = """
+report_python_template = """
 # Code Quality Report
 
 The following report details the overall quality of the repo
@@ -34,7 +34,7 @@ The following report details the overall quality of the repo
 
 ## Candidate
 
-**Name**: {candidate[name]} 
+**Name**: {candidate[name]}
 
 ## Candidate Review
 

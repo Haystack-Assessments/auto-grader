@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
 Purpose:
-    PyGradeReport Class Definition
+    ReportPython Class Definition
 
-    Hold the implementation of a pygrade report
+    Hold the implementation of the report for a python project
 """
 
 # Python Library Imports
@@ -13,7 +13,7 @@ from typing import Any, Dict
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
-from grader.artifacts.report_templates.candidate_report import candidate_report_template
+from grader.artifacts.report_templates.report_python import report_python_template
 from grader.flake8.flake8 import Flake8
 from grader.mypy.mypy import Mypy
 from grader.pytest.pytest import Pytest
@@ -26,13 +26,13 @@ from grader.pycodestyle.pycodestyle import Pycodestyle
 ###
 
 
-class PyGradeReport:
+class ReportPython:
     """
     Purpose:
-        The PyGradeReport Class represents a python grade report for code
+        The ReportPython Class represents a python grade report for code
     """
 
-    report_summary_template = candidate_report_template
+    report_summary_template = report_python_template
 
     ###
     # Reserved Methods
@@ -47,7 +47,7 @@ class PyGradeReport:
     ) -> None:
         """
         Purpose:
-            Constructor for a PyGradeReport
+            Constructor for a ReportPython
         Args:
             report_name: unique name for the report
             candidate_name: name of the candidate
@@ -70,7 +70,7 @@ class PyGradeReport:
     def __repr__(self) -> None:
         """
         Purpose:
-            String Representation for a PyGradeReport
+            String Representation for a ReportPython
         Args:
             N/A
         Returns:
@@ -79,7 +79,7 @@ class PyGradeReport:
             N/A
         """
 
-        return f"<PyGradeReport {self.report_name} (of {self.source_code})>"
+        return f"<ReportPython {self.report_name} (of {self.source_code})>"
 
     ###
     # Properties
@@ -104,7 +104,7 @@ class PyGradeReport:
     def report_summary_path(self):
         """
         Purpose:
-            Get the 
+            Get the
         Args:
             N/A
         Returns:

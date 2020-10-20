@@ -8,7 +8,7 @@ import click
 import getpass
 
 # Local Python Library Imports
-from grader.report.pygrade_report import PyGradeReport
+from grader.report.report_python import ReportPython
 
 
 ###
@@ -62,7 +62,7 @@ def generate(
     click.echo("Generating Report")
 
     # Build base report object
-    pygrade_report = PyGradeReport(report_name, candidate_name, source_code)
+    pygrade_report = ReportPython(report_name, candidate_name, source_code)
 
     # Generate the report
     pygrade_report.generate_report(overwrite=overwrite)
