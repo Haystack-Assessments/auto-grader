@@ -4,12 +4,6 @@ Purpose:
     .md generation
 """
 
-# Python Library Imports
-# N/A
-
-# Local Python Library Imports
-# N/A
-
 
 ###
 # Artifact Definition
@@ -25,6 +19,7 @@ The following report details the overall quality of the repo
 
 * [Candidate](#candidate)
 * [Code Summary](#code-summary)
+* [Performance Profiling](#performance-profiling)
 * [Tests](#tests)
 * [Coverage](#coverage)
 * [Mypy](#mypy)
@@ -38,11 +33,31 @@ The following report details the overall quality of the repo
 
 ## Candidate Review
 
-Manual Review TODO
+Manual Overview
 
 ## Code Summary
 
-TODO Automation
+Manual Summary
+
+## Performance Profiling
+
+The following section details performance profiling of the solutions
+
+### Execution Time
+
+The following shows the execution time of the solution using different inputs
+
+```bash
+TODO
+```
+
+### Memory
+
+The following shows the memory usage during the execution of the assessment code
+
+```bash
+TODO
+```
 
 ## Tests
 
@@ -248,156 +263,3 @@ The following details results from the Flake8 tool:
 {flake8[flakes_str]}
 ```
 """
-
-# candidate_report_template = """
-# # Code Quality Report
-
-# The following report details the overall quality of the repo
-
-# ## Table of Contents
-
-# * [Candidate](#candidate)
-# * [Summary](#summary)
-# * [Tests](#tests)
-# * [Coverage](#coverage)
-# * [Typing](#typing)
-# * [Style](#style)
-#     * [Pylint](#pylint)
-#     * [Pycodestyle](#pycodestyle)
-#     * [Flake8](#flake8)
-
-# ## Candidate
-
-# **Name**: {candidate.name}
-# **Email**: {candidate.email}
-
-# ## Overview
-
-# Below is an overview of results
-
-# ### Summary
-
-# The candidate created a
-
-# ### Design
-
-# The solution ...
-
-# ## Tests
-
-# The following details results of automated testing using Pytest:
-
-# ### Summary
-
-# **Total Tests**: {TODO}
-# **Total Passed**: {TODO}
-# **Total Failed**: {TODO}
-# **Percentage Passed**: {TODO}
-
-# ### Details
-
-# ```bash
-# {TODO}
-# ```
-
-# ### Report
-
-# Report is located ...
-
-# ## Coverage
-
-# The following details results of automated testing using Pytest-cov:
-
-# ### Summary
-
-# **Code Coverage**: {TODO}
-
-# ### Details
-
-# ```bash
-# TBD
-# ```
-
-# ### Report
-
-# Report is located ...
-
-# ## Typing
-
-# The following details results from python static type checking:
-
-# ### Summary
-
-# **Errors**: {TODO}
-# **Warning**: {TODO}
-
-# ### Details
-
-# ```bash
-# {TODO}
-# ```
-
-# ## Style
-
-# The following detail results from various python style tools:
-
-# ### Pylint
-
-# The following details results from the Pylint tool:
-
-# #### Summary
-
-# **Score**: {TODO}/10
-# **Fatal**: {TODO}
-# **Error**: {TODO}
-# **Warning**: {TODO}
-# **Convention**: {TODO}
-# **Refactor**: {TODO}
-
-# #### Details
-
-# ```bash
-# {TODO}
-# ```
-
-# ### Pycodestyle
-
-# The following details results from the Pycodestyle tool:
-
-# #### Summary
-
-# **Errors**: {TODO}
-# **Warnings**: {TODO}
-
-# ```bash
-# {TODO}
-# ```
-
-# #### Details
-
-# ```bash
-# {TODO}
-# ```
-
-# ### Flake8
-
-# The following details results from the Flake8 tool:
-
-# #### Summary
-
-# **Errors**: {TODO}
-# **Warnings**: {TODO}
-# **Naming**: {TODO}
-# **Design (Flakes)**: {TODO}
-# **Complexity (Mccabe)**: {TODO}
-
-# ```bash
-# {TODO}
-# ```
-
-# #### Details
-
-# ```bash
-# {TODO}
-# ```
-# """
