@@ -27,7 +27,7 @@ class Mypy:
 
     default_args = ()
     default_flags = [
-        "--allow-untyped-defs",
+        "--disallow-untyped-defs",
         "--disallow-untyped-calls",
         "--disallow-incomplete-defs",
         "--ignore-missing-imports",
