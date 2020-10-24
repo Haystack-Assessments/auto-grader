@@ -3,6 +3,19 @@
 #
 # Commands:
 # help                        Print help documentation
+# black                       Run Black
+# build                       Build Package
+# clean                       Clean Package
+# flake8                      Run Flake8
+# help                        Print help documentation
+# install                     Install Package
+# mypy                        Run Mypi
+# profile                     Running Assessment with Profile Enabled
+# pycodestyle                 Run Pycodestyle
+# pylint                      Run Pylint
+# run                         Running Assessment
+# test                        Run Unit Tests
+# venv                        Create Virtual Environment
 # ---------------------------------------------------------
 
 
@@ -14,15 +27,29 @@
 help:
 	# Print help documentation
 	@echo "Makefile Commands:"
-	@echo "  help                        Print help documentation"
-	@echo "  test                        Run Unit Tests"
 	@echo "  black                       Run Black"
+	@echo "  build                       Build Package"
+	@echo "  clean                       Clean Package"
 	@echo "  flake8                      Run Flake8"
+	@echo "  help                        Print help documentation"
+	@echo "  install                     Install Package"
 	@echo "  mypy                        Run Mypi"
 	@echo "  pycodestyle                 Run Pycodestyle"
 	@echo "  pylint                      Run Pylint"
-	@echo "  build                       Build Package"
-	@echo "  clean                       Clean Package"
+	@echo "  run                         Running Assessment"
+	@echo "  test                        Run Unit Tests and Code Coverage"
+	@echo "  venv                        Create Virtual Environment"
+
+
+###
+# Env Commands
+###
+
+
+venv:
+	# Create Venv
+	python3 -m virtualenv venv
+
 
 ###
 # Test Commands
@@ -68,6 +95,17 @@ pylint:
 build:
 	# Build Package
 	python3 setup.py build
+
+
+###
+# Install Commands
+###
+
+
+install:
+	# Install Package
+	pip3 install --editable .
+
 
 
 ###
