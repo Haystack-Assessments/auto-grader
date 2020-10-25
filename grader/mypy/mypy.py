@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
+from grader.tool.tool import Tool
 
 
 ###
@@ -19,13 +20,13 @@ import grader.subprocess.subprocess as subprocess
 ###
 
 
-class Mypy:
+class Mypy(Tool):
     """
     Purpose:
         Responsible for interacting with Mypy
     """
 
-    default_args = ()
+    default_args = []
     default_flags = [
         "--disallow-untyped-defs",
         "--disallow-untyped-calls",
@@ -42,6 +43,7 @@ class Mypy:
     def __init__(
         self,
         source_code: str,
+        python_package: str = None,
         args: Optional[Dict[str, str]] = None,
         flags: Optional[List[str]] = None,
     ) -> None:
@@ -50,6 +52,7 @@ class Mypy:
             Constructor for a Mypy
         Args:
             source_code: code to run mypy on
+            python_package: python_package to assess
             args: argument overrides for mypy
             flags: flag overrides for mypy
         Returns:
@@ -58,12 +61,12 @@ class Mypy:
             Exception: If the path to code is not valid
         """
 
-        if not os.path.isdir(source_code):
-            raise Exception(f"{source_code} is not a valid path to code")
-
-        self.source_code = source_code
-        self.args = args or self.default_args
-        self.flags = flags or self.default_flags
+        super().__init__(
+            source_code,
+            python_package=python_package,
+            args=args,
+            flags=flags,
+        )
 
     def __repr__(self) -> str:
         """
@@ -99,7 +102,7 @@ class Mypy:
         parsed_args = " ".join([f"{arg}={value}" for (arg, value) in self.args])
         parsed_flags = " ".join(self.flags)
 
-        return f"python3 -m mypy {parsed_flags} {parsed_args}"
+        return f"python3 -m mypy {parsed_flags} {parsed_args} {self.python_package}"
 
     ###
     # Mypy Operations

@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
+from grader.tool.tool import Tool
 
 
 ###
@@ -19,16 +20,16 @@ import grader.subprocess.subprocess as subprocess
 ###
 
 
-class Pylint:
+class Pylint(Tool):
     """
     Purpose:
         Responsible for interacting with Pylint
     """
 
-    default_args = (
+    default_args = [
         ("--output-format", "parseable"),
-        ("--ignore", "'./docs .eggs/ .git/'"),
-    )
+        ("--ignore", "'./docs .eggs/ .git/ ./venv ./tests'"),
+    ]
     default_flags = []
 
     ###
@@ -38,28 +39,31 @@ class Pylint:
     def __init__(
         self,
         source_code: str,
+        python_package: str = None,
         args: Optional[Dict[str, str]] = None,
         flags: Optional[List[str]] = None,
     ) -> None:
         """
         Purpose:
-            Constructor for a Pylint
+            Constructor for a Mypy
         Args:
-            source_code: code to run pylint on
-            args: argument overrides for pylint
-            flags: flag overrides for pylint
+            source_code: code to run mypy on
+            python_package: python_package to assess
+            args: argument overrides for mypy
+            flags: flag overrides for mypy
         Returns:
             N/A
         Raises:
             Exception: If the path to code is not valid
         """
 
-        if not os.path.isdir(source_code):
-            raise Exception(f"{source_code} is not a valid path to code")
+        super().__init__(
+            source_code,
+            python_package=python_package,
+            args=args,
+            flags=flags,
+        )
 
-        self.source_code = source_code
-        self.args = args or self.default_args
-        self.flags = flags or self.default_flags
 
     def __repr__(self) -> str:
         """
@@ -95,7 +99,7 @@ class Pylint:
         parsed_args = " ".join([f"{arg}={value}" for (arg, value) in self.args])
         parsed_flags = " ".join(self.flags)
 
-        return f"python3 -m pylint {parsed_flags} {parsed_args} ./**/*.py"
+        return f"python3 -m pylint {parsed_flags} {parsed_args} {self.python_package}"
 
     ###
     # Pylint Operations

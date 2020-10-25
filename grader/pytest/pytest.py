@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional, Union
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
+from grader.tool.tool import Tool
 
 
 ###
@@ -19,7 +20,7 @@ import grader.subprocess.subprocess as subprocess
 ###
 
 
-class Pytest:
+class Pytest(Tool):
     """
     Purpose:
         Responsible for interacting with Pytest
@@ -41,31 +42,36 @@ class Pytest:
         self,
         source_code: str,
         base_report_path: str,
+        python_package: str = None,
         args: Optional[Dict[str, str]] = None,
         flags: Optional[List[str]] = None,
     ) -> None:
         """
         Purpose:
-            Constructor for a Pytest
+            Constructor for a Mypy
         Args:
-            source_code: code to run pytest on
+            source_code: code to run mypy on
+            python_package: python_package to assess
             base_report_path: path to store reports
-            args: argument overrides for pytest
-            flags: flag overrides for pytest
+            args: argument overrides for mypy
+            flags: flag overrides for mypy
         Returns:
             N/A
         Raises:
             Exception: If the path to code is not valid
         """
 
-        if not os.path.isdir(source_code):
-            raise Exception(f"{source_code} is not a valid path to code")
+        super().__init__(
+            source_code,
+            python_package=python_package,
+            args=args,
+            flags=flags,
+        )
 
-        self.source_code = source_code
-        self.args = args or self.default_args
-        self.flags = flags or self.default_flags
-
+        # Add Report Path for Storing Results
         self.base_report_path = base_report_path
+
+        # Add Extra Args for Pytest
         self.args.append(("--html", f"{self.base_report_path}/pytest/index.html"))
         self.args.append(("--cov-report", f"html:{self.base_report_path}/pytest-cov/"))
         self.args.append(("--cov-report", "term"))
