@@ -227,6 +227,8 @@ class Pytest(Tool):
             parsed_output["tests"][f"{message_type}_str"] = "\n".join(
                 parsed_output["tests"][message_type]
             )
+            if not parsed_output["tests"][f"{message_type}_str"]:
+                parsed_output["tests"][f"{message_type}_str"] = "N/A"
 
         # Stringify Coverage Items for Reporting
         parsed_output["coverage"]["details_str"] = "\n".join(

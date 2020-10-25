@@ -220,5 +220,7 @@ class Pylint(Tool):
             parsed_output[f"{message_type}_str"] = "\n".join(
                 parsed_output[message_type]
             )
+            if not parsed_output[f"{message_type}_str"]:
+                parsed_output[f"{message_type}_str"] = "N/A"
 
         return parsed_output
