@@ -7,6 +7,7 @@ Purpose:
 """
 
 # Python Library Imports
+import json
 import os
 import pathlib
 from typing import Any, Dict
@@ -43,6 +44,7 @@ class ReportPython:
         report_name: str,
         candidate_name: str,
         source_code: str,
+        python_package: str = None,
         base_report_path: str = f"{os.path.abspath('./')}/reports",
     ) -> None:
         """
@@ -52,6 +54,7 @@ class ReportPython:
             report_name: unique name for the report
             candidate_name: name of the candidate
             source_code: path to the code to grade
+            python_package: package to assess, defaults to *
             base_report_path: path to reports to save. Defaults to ./reports
         Returns:
             N/A
@@ -59,13 +62,23 @@ class ReportPython:
             Exception: If the path to code is not valid
         """
 
-        if not os.path.isdir(source_code):
-            raise Exception(f"{source_code} is not a valid path to code")
-
-        self.base_report_path = base_report_path
+        # Code Data
         self.source_code = source_code
+        if python_package:
+            self.code_dir = f"{source_code}/{python_package}"
+            self.python_package = python_package
+        else:
+            self.code_dir = source_code
+            self.python_package = "*"
+
+        # Report Data
+        self.base_report_path = base_report_path
         self.report_name = report_name
         self.candidate_name = candidate_name
+
+        # Validate Code Dir Exists
+        if not os.path.isdir(self.code_dir):
+            raise Exception(f"{self.code_dir} is not a valid path to code")
 
     def __repr__(self) -> None:
         """
@@ -79,7 +92,10 @@ class ReportPython:
             N/A
         """
 
-        return f"<ReportPython {self.report_name} (of {self.source_code})>"
+        return (
+            f"<ReportPython {self.report_name} (of "
+            f"{self.source_code}/{python_package})>"
+        )
 
     ###
     # Properties
@@ -93,7 +109,7 @@ class ReportPython:
         Args:
             N/A
         Returns:
-            N/A
+            report_path: Path where all data is stored
         Raises:
             N/A
         """
@@ -104,16 +120,31 @@ class ReportPython:
     def report_summary_path(self):
         """
         Purpose:
-            Get the
+            Summary Filename
         Args:
             N/A
         Returns:
-            N/A
+            report_summary_path: name of the summary file that is stored
         Raises:
             N/A
         """
 
         return f"{self.report_path}/report_summary.md"
+
+    @property
+    def report_raw_data_path(self):
+        """
+        Purpose:
+            Raw Data Filename
+        Args:
+            N/A
+        Returns:
+            report_raw_data_path: name of the raw data file that is stored
+        Raises:
+            N/A
+        """
+
+        return f"{self.report_path}/report_raw_data.json"
 
     ###
     # Report Operations
@@ -126,23 +157,29 @@ class ReportPython:
 
             If overwrite is false and report exists, will fail
         Args:
-            N/A
+            overwrite: whether or not to overwrite the file if it already exists
         Returns:
             N/A
         Raises:
             Exception: if report exists and overwrite is false
         """
 
+        # Ensuring path doesn't already exist
         if os.path.isdir(self.report_path) and not overwrite:
             raise Exception(f"Report {self.report_name} already exists")
 
+        # Create the path
         pathlib.Path(self.report_path).mkdir(parents=True, exist_ok=True)
 
+        # Get Pure Report Data
         report_data = self.get_report_data()
 
+        # Get Summary Data
         report_summary_data = self.build_report_summary(report_data)
 
+        # Store Data
         self.store_report_summary(report_summary_data)
+        self.store_report_raw_data(report_data)
 
     def get_report_data(self) -> Dict[str, Any]:
         """
@@ -157,11 +194,21 @@ class ReportPython:
         """
 
         # Set Up Runners
-        flake8_runner = Flake8(self.source_code)
-        mypy_runner = Mypy(self.source_code)
-        pylint_runner = Pylint(self.source_code)
-        pytest_runner = Pytest(self.source_code, self.report_path)
-        pycodestyle_runner = Pycodestyle(self.source_code)
+        flake8_runner = Flake8(
+            self.source_code, python_package=self.python_package
+        )
+        mypy_runner = Mypy(
+            self.source_code, python_package=self.python_package
+        )
+        pylint_runner = Pylint(
+            self.source_code, python_package=self.python_package
+        )
+        pytest_runner = Pytest(
+            self.source_code, self.report_path, python_package=self.python_package
+        )
+        pycodestyle_runner = Pycodestyle(
+            self.source_code, python_package=self.python_package
+        )
 
         report_data = {
             "candidate": {"name": self.candidate_name},
@@ -193,7 +240,7 @@ class ReportPython:
         Purpose:
             Store the finalize Report
         Args:
-            N/A
+            report_summary: formatted report summary
         Returns:
             N/A
         Raises:
@@ -202,3 +249,24 @@ class ReportPython:
 
         with open(self.report_summary_path, "w") as report_summary_file_obj:
             report_summary_file_obj.write(report_summary)
+
+    def store_report_raw_data(self, report_data: Dict[str, Any]) -> None:
+        """
+        Purpose:
+            Store the raw data
+        Args:
+            report_data: Dict of parsed and formatted report data
+        Returns:
+            N/A
+        Raises:
+            Exception: if report storing fails
+        """
+
+        with open(self.report_raw_data_path, "w") as report_raw_data_file_obj:
+            json.dump(
+                report_data,
+                report_raw_data_file_obj,
+                sort_keys=True,
+                indent=2,
+                separators=(",", ": "),
+            )
