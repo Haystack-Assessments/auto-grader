@@ -14,7 +14,10 @@ from typing import Any, Dict
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
-from grader.artifacts.report_templates.report_python import report_python_template
+from grader.artifacts.report_templates.report_python import (
+    report_python_html_template,
+    report_python_md_template,
+)
 from grader.flake8.flake8 import Flake8
 from grader.mypy.mypy import Mypy
 from grader.pytest.pytest import Pytest
@@ -32,8 +35,6 @@ class ReportPython:
     Purpose:
         The ReportPython Class represents a python grade report for code
     """
-
-    report_summary_template = report_python_template
 
     ###
     # Reserved Methods
@@ -117,14 +118,29 @@ class ReportPython:
         return f"{self.base_report_path}/{self.report_name}"
 
     @property
-    def report_summary_path(self):
+    def report_html_summary_path(self):
         """
         Purpose:
-            Summary Filename
+            HTML Summary Filename
         Args:
             N/A
         Returns:
-            report_summary_path: name of the summary file that is stored
+            report_html_summary_path: name of the .html summary file that is stored
+        Raises:
+            N/A
+        """
+
+        return f"{self.report_path}/report_summary.html"
+
+    @property
+    def report_md_summary_path(self):
+        """
+        Purpose:
+            Markdown Summary Filename
+        Args:
+            N/A
+        Returns:
+            report_md_summary_path: name of the .md summary file that is stored
         Raises:
             N/A
         """
@@ -174,11 +190,8 @@ class ReportPython:
         # Get Pure Report Data
         report_data = self.get_report_data()
 
-        # Get Summary Data
-        report_summary_data = self.build_report_summary(report_data)
-
         # Store Data
-        self.store_report_summary(report_summary_data)
+        self.store_report_summary(report_data)
         self.store_report_raw_data(report_data)
 
     def get_report_data(self) -> Dict[str, Any]:
@@ -221,34 +234,27 @@ class ReportPython:
 
         return report_data
 
-    def build_report_summary(self, report_data: Dict[str, Any]) -> str:
+    def store_report_summary(self, report_data: Dict[str, Any]) -> None:
         """
         Purpose:
-            Store the finalize Report
+            Store the finalize Report in .html and .md for consumption
         Args:
             report_data: Dict of parsed and formatted report data
-        Returns:
-            report_summary: formatted report summary
-        Raises:
-            Exception: if report storing fails
-        """
-
-        return self.report_summary_template.format(**report_data)
-
-    def store_report_summary(self, report_summary: str) -> None:
-        """
-        Purpose:
-            Store the finalize Report
-        Args:
-            report_summary: formatted report summary
         Returns:
             N/A
         Raises:
             Exception: if report storing fails
         """
 
-        with open(self.report_summary_path, "w") as report_summary_file_obj:
-            report_summary_file_obj.write(report_summary)
+        with open(self.report_html_summary_path, "w") as report_html_summary_file_obj:
+            report_html_summary_file_obj.write(
+                report_python_html_template.format(**report_data)
+            )
+
+        with open(self.report_md_summary_path, "w") as report_md_summary_file_obj:
+            report_md_summary_file_obj.write(
+                report_python_md_template.format(**report_data)
+            )
 
     def store_report_raw_data(self, report_data: Dict[str, Any]) -> None:
         """
