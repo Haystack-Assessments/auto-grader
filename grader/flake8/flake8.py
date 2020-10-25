@@ -150,11 +150,11 @@ class Flake8(Tool):
         }
 
         # Set up Regex for parsing
-        error_regex = r"^.*\.py\:\d+\:\d\: E"
-        warning_regex = r"^.*\.py\:\d+\:\d\: W"
-        naming_regex = r"^.*\.py\:\d+\:\d\: N"
-        flake_regex = r"^.*\.py\:\d+\:\d\: F"
-        complexity_regex = r"^.*\.py\:\d+\:\d\: C"
+        error_regex = r"^.*\.py\:\d+\:\d+\: E"
+        warning_regex = r"^.*\.py\:\d+\:\d+\: W"
+        naming_regex = r"^.*\.py\:\d+\:\d+\: N"
+        flake_regex = r"^.*\.py\:\d+\:\d+\: F"
+        complexity_regex = r"^.*\.py\:\d+\:\d+\: C"
         summary_regex = r"^[0-9]"
 
         for output_line in raw_flake8_stdout:
@@ -208,5 +208,7 @@ class Flake8(Tool):
             parsed_output[f"{message_type}_str"] = "\n".join(
                 parsed_output[message_type]
             )
+            if not parsed_output[f"{message_type}_str"]:
+                parsed_output[f"{message_type}_str"] = "N/A"
 
         return parsed_output
