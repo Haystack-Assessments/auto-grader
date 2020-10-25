@@ -26,6 +26,14 @@ from grader.report.report_python import ReportPython
     help="Source Code to Grade",
 )
 @click.option(
+    "--package",
+    "python_package",
+    required=False,
+    default="assessment_python_proficiency",
+    type=str,
+    help="Package to Grade",
+)
+@click.option(
     "--report",
     "report_name",
     required=True,
@@ -54,6 +62,7 @@ def generate(
     report_name: str,
     candidate_name: str,
     source_code: str,
+    python_package: str,
     overwrite: bool,
 ) -> None:
     """
@@ -62,7 +71,12 @@ def generate(
     click.echo("Generating Report")
 
     # Build base report object
-    pygrade_report = ReportPython(report_name, candidate_name, source_code)
+    pygrade_report = ReportPython(
+        report_name,
+        candidate_name,
+        source_code,
+        python_package
+    )
 
     # Generate the report
     pygrade_report.generate_report(overwrite=overwrite)
