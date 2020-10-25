@@ -59,7 +59,11 @@ def test_Pytest___init___base() -> int:
         ("--cov-report", f"html:{test_base_report_path}/pytest-cov/"),
         ("--cov-report", "term"),
     ]
-    assert test_pytest.flags == ["--doctest-modules", "--self-contained-html", "--verbose"]
+    assert test_pytest.flags == [
+        "--doctest-modules",
+        "--self-contained-html",
+        "--verbose",
+    ]
 
 
 def test_Pytest___init___override() -> int:

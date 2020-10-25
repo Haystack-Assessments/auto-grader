@@ -207,15 +207,9 @@ class ReportPython:
         """
 
         # Set Up Runners
-        flake8_runner = Flake8(
-            self.source_code, python_package=self.python_package
-        )
-        mypy_runner = Mypy(
-            self.source_code, python_package=self.python_package
-        )
-        pylint_runner = Pylint(
-            self.source_code, python_package=self.python_package
-        )
+        flake8_runner = Flake8(self.source_code, python_package=self.python_package)
+        mypy_runner = Mypy(self.source_code, python_package=self.python_package)
+        pylint_runner = Pylint(self.source_code, python_package=self.python_package)
         pytest_runner = Pytest(
             self.source_code, self.report_path, python_package=self.python_package
         )

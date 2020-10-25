@@ -49,7 +49,10 @@ def test_Pycodestyle___init___base() -> int:
     assert test_pycodestyle.source_code == test_source_code
     assert test_pycodestyle.code_dir == f"{test_source_code}"
     assert test_pycodestyle.python_package == "*"
-    assert test_pycodestyle.args == [("--max-line-length", 88), ("--exclude", "'.eggs tests .venv'")]
+    assert test_pycodestyle.args == [
+        ("--max-line-length", 88),
+        ("--exclude", "'.eggs tests .venv'"),
+    ]
     assert test_pycodestyle.flags == ["--statistics"]
 
 

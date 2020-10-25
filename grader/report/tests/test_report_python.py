@@ -48,9 +48,7 @@ def test_ReportPython___init___base() -> int:
 
     # Init ReportPython
     test_report_python = ReportPython(
-        test_report_name,
-        test_candidate_name,
-        test_source_code,
+        test_report_name, test_candidate_name, test_source_code
     )
     assert test_report_python.report_name == test_report_name
     assert test_report_python.candidate_name == test_candidate_name

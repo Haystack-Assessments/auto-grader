@@ -72,10 +72,7 @@ def generate(
 
     # Build base report object
     pygrade_report = ReportPython(
-        report_name,
-        candidate_name,
-        source_code,
-        python_package
+        report_name, candidate_name, source_code, python_package
     )
 
     # Generate the report

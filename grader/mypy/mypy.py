@@ -62,10 +62,7 @@ class Mypy(Tool):
         """
 
         super().__init__(
-            source_code,
-            python_package=python_package,
-            args=args,
-            flags=flags,
+            source_code, python_package=python_package, args=args, flags=flags
         )
 
     def __repr__(self) -> str:
