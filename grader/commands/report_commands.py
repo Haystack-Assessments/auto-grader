@@ -5,10 +5,10 @@
 
 # Python Library Imports
 import click
-import getpass
 
 # Local Python Library Imports
 from grader.report.report_python import ReportPython
+from grader.report.report_ranking import ReportRanking
 
 
 ###
@@ -68,7 +68,7 @@ def generate(
     """
     Generate a pygrade report
     """
-    click.echo("Generating Report")
+    click.echo("Generating Candidate Report")
 
     # Build base report object
     pygrade_report = ReportPython(
@@ -79,3 +79,48 @@ def generate(
     pygrade_report.generate_report(overwrite=overwrite)
 
     click.echo(f"Report Created: {pygrade_report.report_path}")
+
+
+@click.command("rank")
+@click.option(
+    "--report",
+    "report_name",
+    required=True,
+    default=None,
+    type=str,
+    help="Name of the Report",
+)
+@click.option(
+    "--candidates",
+    "candidate_path",
+    required=False,
+    default=None,
+    type=str,
+    help="Where are Candidate Reports to Rank",
+)
+@click.option(
+    "--overwrite",
+    flag_value=True,
+    type=bool,
+    default=False,
+    help="Overwrite report if it already exists?",
+)
+@click.pass_context
+def rank(
+    cli_context: object,
+    report_name: str,
+    candidate_path: str,
+    overwrite: bool,
+) -> None:
+    """
+    Generate a pygrade report
+    """
+    click.echo("Generating Ranking Report")
+
+    # Build base report object
+    ranking_report = ReportRanking(report_name, candidate_path)
+
+    # Generate the report
+    ranking_report.generate_report(overwrite=overwrite)
+
+    click.echo(f"Report Created: {ranking_report.report_path}")

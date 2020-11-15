@@ -46,11 +46,7 @@ pre {{
         <li><a href="#Coverage_Summary">Summary</a></li>
         <li><a href="#Coverage_Details">Details</a></li>
     </ul>
-    <li><a href="#Mypy">Mypy</a></li>
-    <ul class="table_of_contents_contents_mypy">
-        <li><a href="#Mypy_Summary">Summary</a></li>
-        <li><a href="#Mypy_Details">Details</a></li>
-    </ul>
+    <li><a href="#Style">Style</a></li>
     <li><a href="#Pylint">Pylint</a></li>
     <ul class="table_of_contents_contents_pylint">
         <li><a href="#Pylint_Summary">Summary</a></li>
@@ -65,6 +61,11 @@ pre {{
     <ul class="table_of_contents_contents_flake8">
         <li><a href="#Flake8_Summary">Summary</a></li>
         <li><a href="#Flake8_Details">Details</a></li>
+    </ul>
+    <li><a href="#Mypy">Mypy</a></li>
+    <ul class="table_of_contents_contents_mypy">
+        <li><a href="#Mypy_Summary">Summary</a></li>
+        <li><a href="#Mypy_Details">Details</a></li>
     </ul>
 </ul>
 </div>
@@ -139,6 +140,8 @@ The following section details performance profiling of the solutions:
 <b>Percentage Passed</b>: {pytest[tests][metrics][percentage_passed]}%
 </p>
 
+<img src="assets/test_breakdown_pie_chart.png" alt="Test Success">
+
 <h3 id="Tests_Details">Details</h2>
 
 <p>
@@ -183,42 +186,14 @@ The following details results from python coverage report:
 {pytest[coverage][details_str]}
 </pre>
 
-<h2 id="Mypy">Mypy</h2>
-
-The following details results from python static type checking:
-
-<h3 id="Mypy_Summary">Summary</h2>
+<h2 id="Style">Style</h2>
 
 <p>
-<b>Total Issues</b>: {mypy[metrics][total]}
+The following image overviews the style and typing errors of the code (detailed in
+the sections below)
 </p>
 
-<p>
-<b>Errors</b>: {mypy[metrics][errors]}</br>
-<b>Warnings</b>: {mypy[metrics][warnings]}</br>
-<b>Notes</b>: {mypy[metrics][notes]}
-</p>
-
-<pre>
-{mypy[summary]}
-</pre>
-
-<h3 id="Mypy_Details">Details</h2>
-
-<b>Errors</b>:
-<pre>
-{mypy[errors_str]}
-</pre>
-
-<b>Warnings</b>:
-<pre>
-{mypy[warnings_str]}
-</pre>
-
-<b>Notes</b>:
-<pre>
-{mypy[notes_str]}
-</pre>
+<img src="assets/error_count_line_chart.png" alt="Pylint Scores">
 
 <h2 id="Pylint">Pylint</h2>
 
@@ -350,266 +325,44 @@ The following details results from the Flake8 tool:
 {flake8[flakes_str]}
 </pre>
 
-
-</body>
-</html>
-"""
-
-###
-# Markdown Definition
-###
-
-
-report_python_md_template = """
-# Code Quality Report
-
-The following report details the overall quality of the repo
-
-## Table of Contents
-
-* [Candidate](#candidate)
-* [Code Summary](#code-summary)
-* [Performance Profiling](#performance-profiling)
-* [Tests](#tests)
-* [Coverage](#coverage)
-* [Mypy](#mypy)
-* [Pylint](#pylint)
-* [Pycodestyle](#pycodestyle)
-* [Flake8](#flake8)
-
-## Candidate
-
-**Name**: {candidate[name]}
-
-## Candidate Review
-
-Manual Overview
-
-## Code Summary
-
-Manual Summary
-
-## Performance Profiling
-
-The following section details performance profiling of the solutions
-
-### Execution Time
-
-The following shows the execution time of the solution using different inputs
-
-```bash
-TODO
-```
-
-### Memory Usage
-
-The following shows the memory usage during the execution of the assessment code
-
-```bash
-TODO
-```
-
-## Tests
-
-The following details results from python testing report:
-
-### Summary
-
-**Total Tests**: {pytest[tests][metrics][total_tests]}
-
-**Total Errors**: {pytest[tests][metrics][error_tests]}
-**Percentage Errors**: {pytest[tests][metrics][percentage_error]}%
-
-**Total Failures**: {pytest[tests][metrics][failed_tests]}
-**Percentage Failing**: {pytest[tests][metrics][percentage_failed]}%
-
-**Total Passes**: {pytest[tests][metrics][passed_tests]}
-**Percentage Passed**: {pytest[tests][metrics][percentage_passed]}%
-
-### Details
-
-**Error Tests**:
-```bash
-{pytest[tests][error_tests_str]}
-```
-
-**Failed Tests**:
-```bash
-{pytest[tests][failed_tests_str]}
-```
-
-**Passed Test**:
-```bash
-{pytest[tests][passed_tests_str]}
-```
-
-## Coverage
-
-The following details results from python coverage report:
-
-### Summary
-
-**Coverage Percentage**: {pytest[coverage][metrics][statements_percentage]}%
-
-**Total Statements**: {pytest[coverage][metrics][statements_percentage]}
-**Missing Statements**: {pytest[coverage][metrics][statements_missing]}
-**Branching Statements**: {pytest[coverage][metrics][statements_branching]}
-
-### Details
-
-**Coverage Per File**:
-```bash
-{pytest[coverage][details_str]}
-```
-
-## Mypy
+<h2 id="Mypy">Mypy</h2>
 
 The following details results from python static type checking:
 
-### Summary
+<h3 id="Mypy_Summary">Summary</h2>
 
-**Total Issues**: {mypy[metrics][total]}
+<p>
+<b>Total Issues</b>: {mypy[metrics][total]}
+</p>
 
-**Errors**: {mypy[metrics][errors]}
-**Warnings**: {mypy[metrics][warnings]}
-**Notes**: {mypy[metrics][notes]}
+<p>
+<b>Errors</b>: {mypy[metrics][errors]}</br>
+<b>Warnings</b>: {mypy[metrics][warnings]}</br>
+<b>Notes</b>: {mypy[metrics][notes]}
+</p>
 
-```bash
+<pre>
 {mypy[summary]}
-```
+</pre>
 
-### Details
+<h3 id="Mypy_Details">Details</h2>
 
-**Errors**:
-```bash
+<b>Errors</b>:
+<pre>
 {mypy[errors_str]}
-```
+</pre>
 
-**Warnings**:
-```bash
+<b>Warnings</b>:
+<pre>
 {mypy[warnings_str]}
-```
+</pre>
 
-**Notes**:
-```bash
+<b>Notes</b>:
+<pre>
 {mypy[notes_str]}
-```
+</pre>
 
-## Pylint
 
-The following details results from the Flake8 tool:
-
-### Summary
-
-**Total Issues**: {pylint[metrics][total]}
-**Overall Score**: {pylint[score]} / 10
-
-**Errors**: {pylint[metrics][errors]}
-**Warnings**: {pylint[metrics][warnings]}
-**Ignored**: {pylint[metrics][ignored]}
-**Style Issues**: {pylint[metrics][style_issues]}
-**Design Issues**: {pylint[metrics][design_issues]}
-
-```bash
-{pylint[summary]}
-```
-
-### Details
-
-**Errors**:
-```bash
-{pylint[errors_str]}
-```
-
-**Warnings**:
-```bash
-{pylint[warnings_str]}
-```
-
-**Ignored Items**:
-```bash
-{pylint[ignored_str]}
-```
-
-**Style Issues**:
-```bash
-{pylint[style_issues_str]}
-```
-
-**Design Issues**:
-```bash
-{pylint[design_issues_str]}
-```
-
-## Pycodestyle
-
-The following details results from the Flake8 tool:
-
-### Summary
-
-**Total Issues**: {pycodestyle[metrics][total]}
-
-**Errors**: {pycodestyle[metrics][errors]}
-**Warnings**: {pycodestyle[metrics][warnings]}
-
-```bash
-{pycodestyle[summary_str]}
-```
-
-### Details
-
-**Errors**:
-```bash
-{pycodestyle[errors_str]}
-```
-
-**Warnings**:
-```bash
-{pycodestyle[warnings_str]}
-```
-
-## Flake8
-
-The following details results from the Flake8 tool:
-
-### Summary
-
-**Total Issues**: {flake8[metrics][total]}
-
-**Errors**: {flake8[metrics][errors]}
-**Warnings**: {flake8[metrics][warnings]}
-**Naming**: {flake8[metrics][namings]}
-**Design (Flakes)**: {flake8[metrics][flakes]}
-**Complexity (Mccabe)**: {flake8[metrics][complexities]}
-
-```bash
-{flake8[summary_str]}
-```
-
-### Details
-
-**Errors**:
-```bash
-{flake8[errors_str]}
-```
-
-**Warnings**:
-```bash
-{flake8[warnings_str]}
-```
-
-**Naming Issues**:
-```bash
-{flake8[namings_str]}
-```
-
-**Complexity Issues**:
-```bash
-{flake8[complexities_str]}
-```
-
-**Design Issues**:
-```bash
-{flake8[flakes_str]}
-```
+</body>
+</html>
 """

@@ -196,7 +196,7 @@ class Pylint(Tool):
                 # Else, update summary data
                 parsed_output["summary"] = output_line
                 parsed_output["score"] = re.findall(
-                    r"-{0,1}\d\.\d{2}\/10", parsed_output["summary"]
+                    r"-{0,1}\d{1,2}\.\d{2}\/10", parsed_output["summary"]
                 )[0].split("/")[0]
             else:
                 # non-matching line
