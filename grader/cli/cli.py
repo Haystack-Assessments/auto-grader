@@ -17,7 +17,7 @@ import grader.commands.report_commands as report_commands
 
 
 @click.group(invoke_without_command=True)
-@click.version_option("0.0.1")
+@click.version_option("0.0.4")
 @click.pass_context
 def pygrader_cli(cli_context):
     """
@@ -60,3 +60,4 @@ def setup_grader_cli() -> None:
     """
 
     report_command_group.add_command(report_commands.generate)
+    report_command_group.add_command(report_commands.rank)
