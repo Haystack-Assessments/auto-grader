@@ -8,16 +8,17 @@ Purpose:
 
 # Python Library Imports
 import json
+import math
+import matplotlib.pyplot as plt
+import numpy as np
 import os
+import pandas as pd
 import pathlib
 from typing import Any, Dict
 
 # Local Python Library Imports
 import grader.subprocess.subprocess as subprocess
-from grader.artifacts.report_templates.report_python import (
-    report_python_html_template,
-    report_python_md_template,
-)
+from grader.artifacts.report_templates.report_python import report_python_html_template
 from grader.flake8.flake8 import Flake8
 from grader.mypy.mypy import Mypy
 from grader.pytest.pytest import Pytest
@@ -46,7 +47,7 @@ class ReportPython:
         candidate_name: str,
         source_code: str,
         python_package: str = None,
-        base_report_path: str = f"{os.path.abspath('./')}/reports",
+        base_report_path: str = f"{os.path.abspath('./')}/reports/python_candidates",
     ) -> None:
         """
         Purpose:
@@ -118,6 +119,21 @@ class ReportPython:
         return f"{self.base_report_path}/{self.report_name}"
 
     @property
+    def asset_path(self):
+        """
+        Purpose:
+            Get the path to the assets for the report
+        Args:
+            N/A
+        Returns:
+            report_path: Path where all assets is stored
+        Raises:
+            N/A
+        """
+
+        return f"{self.report_path}/assets/"
+
+    @property
     def report_html_summary_path(self):
         """
         Purpose:
@@ -131,21 +147,6 @@ class ReportPython:
         """
 
         return f"{self.report_path}/report_summary.html"
-
-    @property
-    def report_md_summary_path(self):
-        """
-        Purpose:
-            Markdown Summary Filename
-        Args:
-            N/A
-        Returns:
-            report_md_summary_path: name of the .md summary file that is stored
-        Raises:
-            N/A
-        """
-
-        return f"{self.report_path}/report_summary.md"
 
     @property
     def report_raw_data_path(self):
@@ -186,13 +187,21 @@ class ReportPython:
 
         # Create the path
         pathlib.Path(self.report_path).mkdir(parents=True, exist_ok=True)
+        pathlib.Path(self.asset_path).mkdir(parents=True, exist_ok=True)
 
         # Get Pure Report Data
         report_data = self.get_report_data()
 
+        # Build Assets
+        self.build_report_assets(report_data)
+
         # Store Data
         self.store_report_summary(report_data)
         self.store_report_raw_data(report_data)
+
+    ###
+    # Compile Data Operations
+    ###
 
     def get_report_data(self) -> Dict[str, Any]:
         """
@@ -228,10 +237,127 @@ class ReportPython:
 
         return report_data
 
+    ###
+    # Graph/Chart Operations
+    ###
+
+    def build_report_assets(self, report_data: Dict[str, Any]) -> None:
+        """
+        Purpose:
+            Build assets for the report. includes all graphs and charts
+        Args:
+            report_data: Dict of parsed and formatted report data
+        Returns:
+            N/A
+        Raises:
+            Exception: If buliding any asset fails
+        """
+
+        self.build_error_count_line_chart(report_data)
+        self.build_test_breakdown_pie_chart(report_data)
+
+    def build_error_count_line_chart(self, report_data: Dict[str, Any]) -> None:
+        """
+        Purpose:
+            Build Error Count Line Charts each candidate. Store a single image in
+            assets
+        Args:
+            report_data: Dict of parsed and formatted report data
+        Returns:
+            N/A
+        Raises:
+            Exception: if graph building fails
+        """
+
+        # Initialize the figure style
+        plt.style.use("seaborn-darkgrid")
+
+        # Plot the scores as line chart
+        plt.plot(
+            ["pylint", "flake8", "pycodestyle", "mypy"],
+            [
+                report_data["pylint"]["metrics"]["total"],
+                report_data["flake8"]["metrics"]["total"],
+                report_data["pycodestyle"]["metrics"]["total"],
+                report_data["mypy"]["metrics"]["total"],
+            ]
+        )
+
+        # Store the figure
+        plt.savefig(f"{self.asset_path}/error_count_line_chart.png")
+
+        # Clost Plot
+        plt.close()
+
+    def build_test_breakdown_pie_chart(self, report_data: Dict[str, Any]) -> None:
+        """
+        Purpose:
+            Build Test Breakdown Pie Chart. Store a single image in assets
+        Args:
+            report_data: Dict of parsed and formatted report data
+        Returns:
+            N/A
+        Raises:
+            Exception: if graph building fails
+        """
+
+        test_scores = {
+            "percentage_error":
+                report_data["pytest"]["tests"]["metrics"]["percentage_error"],
+            "percentage_failed":
+                report_data["pytest"]["tests"]["metrics"]["percentage_failed"],
+            "percentage_passed":
+                report_data["pytest"]["tests"]["metrics"]["percentage_passed"],
+        }
+
+        test_results = []
+        result_percentages = []
+        slice_colors = []
+        # Getting data to chart (different depending on results, e.g. no fails)
+        for test_result, percentage in test_scores.items():
+
+            # Only add result if >0 for cleaner graphs
+            if percentage > 0:
+                test_results.append(test_result.replace("percentage_", ""))
+                result_percentages.append(percentage)
+                if "passed" in test_result:
+                    slice_colors.append("green")
+                else:
+                    slice_colors.append("red")
+
+        # Add Pie Chart
+        plt.pie(
+            result_percentages,
+            labels=test_results,
+            autopct='%1.1f%%',
+            shadow=True,
+            startangle=90,
+            colors=slice_colors,
+        )
+        plt.axis("equal")
+
+        # Add titles to subplot
+        plt.title(
+            "Test Results",
+            loc="center",
+            fontsize=12,
+            fontweight=0,
+        )
+
+        # Store the figure
+        plt.savefig(f"{self.asset_path}/test_breakdown_pie_chart.png")
+
+        # Clost Plot
+        plt.close()
+
+    ###
+    # Store Operations
+    ###
+
     def store_report_summary(self, report_data: Dict[str, Any]) -> None:
         """
         Purpose:
-            Store the finalize Report in .html and .md for consumption
+            Store the finalize Report in .html for consumption
         Args:
             report_data: Dict of parsed and formatted report data
         Returns:
@@ -243,11 +369,6 @@ class ReportPython:
         with open(self.report_html_summary_path, "w") as report_html_summary_file_obj:
             report_html_summary_file_obj.write(
                 report_python_html_template.format(**report_data)
-            )
-
-        with open(self.report_md_summary_path, "w") as report_md_summary_file_obj:
-            report_md_summary_file_obj.write(
-                report_python_md_template.format(**report_data)
             )
 
     def store_report_raw_data(self, report_data: Dict[str, Any]) -> None:
